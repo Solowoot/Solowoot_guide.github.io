@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MacBook: Полный гид — всё, что нужно знать перед покупкой</title>
+    <style>
+        :root {
+            --bg: #000000;
+            --surface: #0d0d0d;
+            --border: #222222;
+            --text: #f5f5f7;
+            --muted: #a1a1a6;
+            --accent: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* ========== ПРОГРЕСС-БАР ЧТЕНИЯ ========== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #0071e3, #ffffff, #0071e3);
+            z-index: 1000;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        /* ========== КНОПКА НАВЕРХ ========== */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            color: var(--text);
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 999;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s, transform 0.4s;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .back-to-top:hover {
+            background: var(--text);
+            color: #000;
+            border-color: var(--text);
+            transform: translateY(-3px);
+        }
+
+        /* ========== ШАПКА ========== */
+        .hero {
+            background-image: url('https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 20px;
+            animation: heroFadeIn 1.2s ease-out;
+        }
+        @keyframes heroFadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #f5f5f7, #a1a1a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero .subtitle {
+            font-size: 22px;
+            color: var(--muted);
+            max-width: 650px;
+            margin: 0 auto;
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            animation: bounce 2s infinite;
+        }
+        .scroll-indicator span {
+            display: block;
+            width: 24px;
+            height: 24px;
+            border-right: 2px solid #fff;
+            border-bottom: 2px solid #fff;
+            transform: rotate(45deg);
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* ========== НАВИГАЦИЯ ========== */
+        .tabs-section {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        .tabs-section.scrolled {
+            padding: 12px 20px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+        }
+        .tab-btn {
+            background: transparent;
+            border: 1px solid #333;
+            color: var(--muted);
+            padding: 14px 26px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 15px;
+            margin: 5px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+        .tab-btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+        .tab-btn.active {
+            background: var(--accent);
+            color: #000000;
+            border-color: var(--accent);
+            font-weight: 600;
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(255,255,255,0.2);
+        }
+
+        /* ========== КОНТЕНТ ВКЛАДОК ========== */
+        .content-container {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        .tab-content {
+            display: none;
+            animation: tabFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tab-content.active { display: block; }
+        @keyframes tabFadeIn {
+            from { opacity: 0; transform: translateY(25px); filter: blur(3px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+        h2 {
+            font-size: 40px;
+            margin-bottom: 15px;
+            text-align: center;
+            background: linear-gradient(135deg, #ffffff, #a1a1a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .section-intro {
+            text-align: center;
+            color: var(--muted);
+            margin-bottom: 50px;
+            font-size: 18px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h3 {
+            font-size: 26px;
+            margin: 45px 0 20px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h3 .emoji { font-size: 28px; }
+
+        p { color: #cccccc; margin-bottom: 18px; font-size: 17px; }
+
+        .features { list-style: none; margin: 30px 0; }
+        .features li {
+            margin-bottom: 20px;
+            padding-left: 25px;
+            border-left: 3px solid #ffffff;
+            font-size: 17px;
+            color: #e0e0e0;
+            transition: all 0.3s;
+        }
+        .features li:hover {
+            border-left-color: #0071e3;
+            padding-left: 35px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 0 8px 8px 0;
+        }
+        .features li strong { color: #ffffff; }
+
+        /* ========== КАРТОЧКИ ========== */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 35px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffffff, transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .card:hover::after { opacity: 1; }
+        .card:hover {
+            border-color: #555;
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .card h3 { margin: 0 0 15px; font-size: 22px; color: #ffffff; }
+        .card .chip-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+        .card p { font-size: 15px; margin-bottom: 8px; }
+
+        /* ========== АККОРДЕОН ========== */
+        .accordion { margin: 30px 0; }
+        .accordion-item {
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            background: var(--surface);
+            transition: all 0.3s;
+        }
+        .accordion-item:hover { border-color: #444; }
+        .accordion-header {
+            padding: 18px 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: background 0.3s;
+        }
+        .accordion-header:hover { background: rgba(255,255,255,0.03); }
+        .accordion-header .arrow {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 14px;
+        }
+        .accordion-item.open .accordion-header .arrow { transform: rotate(180deg); }
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), padding 0.5s;
+            padding: 0 25px;
+        }
+        .accordion-item.open .accordion-body {
+            max-height: 1000px;
+            padding: 20px 25px;
+        }
+        .accordion-body p { font-size: 16px; }
+
+        /* ========== ТАБЛИЦА ========== */
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            font-size: 15px;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .compare-table th {
+            background: #1a1a1a;
+            padding: 18px;
+            text-align: left;
+            border-bottom: 2px solid #444;
+            font-size: 16px;
+        }
+        .compare-table td {
+            padding: 16px 18px;
+            border-bottom: 1px solid #222;
+            transition: background 0.3s;
+        }
+        .compare-table tr:hover td { background: rgba(255,255,255,0.04); }
+        .compare-table .star { color: #ffd700; }
+
+        /* ========== ТАЙМЛАЙН ========== */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+            margin: 40px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #ffffff, #333, #ffffff);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 35px;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 5px;
+            width: 14px;
+            height: 14px;
+            background: #ffffff;
+            border-radius: 50%;
+            border: 3px solid #000;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+            transition: transform 0.3s ease;
+        }
+        .timeline-item.visible::before {
+            transform: scale(1.3);
+        }
+        .timeline-item h3 { margin: 0 0 8px; font-size: 20px; }
+        .timeline-item .date {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        /* ========== БЛОК С ИНТЕРЕСНЫМ ФАКТОМ ========== */
+        .fun-fact {
+            background: linear-gradient(135deg, #1a1a1a, #111);
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 35px;
+            margin: 30px 0;
+            text-align: center;
+            transition: all 0.4s;
+        }
+        .fun-fact:hover {
+            border-color: #555;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        .fun-fact .icon { font-size: 52px; margin-bottom: 15px; }
+        .fun-fact p { font-size: 18px; color: #e0e0e0; }
+
+        /* ========== МИФЫ ========== */
+        .myth-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        .myth-item:hover { border-color: #555; }
+        .myth-item .myth { color: #ff6b6b; font-weight: 600; margin-bottom: 8px; font-size: 17px; }
+        .myth-item .truth { color: #6bff8e; font-size: 16px; }
+
+        /* ========== ГАЛЕРЕЯ РАЗМЕРОВ ========== */
+        .size-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .size-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .size-card:hover { border-color: #666; transform: scale(1.03); }
+        .size-card .laptop-icon { font-size: 60px; margin-bottom: 10px; }
+        .size-card h4 { font-size: 18px; margin-bottom: 8px; }
+        .size-card .dimensions { color: var(--muted); font-size: 13px; }
+
+        /* ========== СЧЁТЧИКИ ========== */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 25px;
+            background: var(--surface);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+        .stat-item:hover { border-color: #555; }
+        .stat-number {
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #a1a1a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-label { color: var(--muted); font-size: 14px; margin-top: 5px; }
+
+        /* ========== ФУТЕР ========== */
+        footer {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+            font-size: 14px;
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+        }
+        footer a { color: var(--muted); text-decoration: none; transition: color 0.3s; }
+        footer a:hover { color: #fff; }
+
+        /* ========== АДАПТИВ ========== */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 36px; }
+            .hero .subtitle { font-size: 16px; }
+            h2 { font-size: 28px; }
+            .tab-btn { padding: 10px 16px; font-size: 13px; }
+            .content-container { padding: 30px 15px; }
+            .back-to-top { bottom: 20px; right: 20px; width: 40px; height: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== ПРОГРЕСС-БАР ========== -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- ========== КНОПКА НАВЕРХ ========== -->
+    <button class="back-to-top" id="backToTop" title="Наверх">↑</button>
+
+    <!-- ========== ШАПКА ========== -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1> MacBook</h1>
+            <p class="subtitle">Максимально полный гид: история, технологии, размеры, чипы от M1 до M5 и честный разбор без маркетинга</p>
+            <a href="https://solowoot.github.io"
+   style="display: inline-block; margin-top: 25px; padding: 14px 32px; background: #ffffff; color: #000000; text-decoration: none; border-radius: 30px; font-weight: 600; font-size: 16px;"
+   onmouseover="this.style.background='#cccccc'"
+   onmouseout="this.style.background='#ffffff'">
+   🛒 Купить MacBook
+</a>
+        </div>
+        <div class="scroll-indicator"><span></span></div>
+    </div>
+
+    <!-- ========== НАВИГАЦИЯ ========== -->
+    <div class="tabs-section" id="tabsSection">
+        <button class="tab-btn active" onclick="switchTab(event, 'tab-evolution')">📜 Эволюция</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-chips')">🧠 Чипы M1–M5</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-sizes')">📐 Размеры</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-display')">🖥️ Экран и звук</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-myths')">❌ Мифы</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-compare')">⚖️ Итоги</button>
+    </div>
+
+    <!-- ========== КОНТЕНТ ========== -->
+    <div class="content-container">
+
+        <!-- ============================================================ -->
+        <!-- ВКЛАДКА 1: ЭВОЛЮЦИЯ -->
+        <!-- ============================================================ -->
+        <div id="tab-evolution" class="tab-content active">
+            <h2>📜 Путь MacBook: от пластика до титана</h2>
+            <p class="section-intro">История MacBook — летопись смелых, порой безумных решений. Apple не боялась убирать то, что казалось незыблемым, и каждая такая революция через пару лет становилась индустриальным стандартом.</p>
+
+            <div class="timeline" id="timelineEvolution">
+                <div class="timeline-item visible">
+                    <div class="date">2006 ГОД</div>
+                    <h3>Самый первый MacBook</h3>
+                    <p>Белый поликарбонатный корпус, процессор Intel Core Duo, 13-дюймовый экран. Цена от $1099. Пришёл на смену iBook G4 и PowerBook G4 — Apple окончательно перешла с PowerPC на Intel. Ноутбук весил 2,3 кг и имел съёмную батарею.</p>
+                </div>
+                <div class="timeline-item visible">
+                    <div class="date">2008 ГОД</div>
+                    <h3>MacBook Air — рождение легенды</h3>
+                    <p>Стив Джобс достал его из бумажного конверта на Macworld. Толщина 19,4 мм, вес 1,36 кг — самый тонкий ноутбук в мире. Жёсткий диск 80 ГБ, опциональный SSD на 64 ГБ за бешеные деньги. Именно Air задал тренд на ультрабуки.</p>
+                </div>
+                <div class="timeline-item visible">
+                    <div class="date">2012 ГОД</div>
+                    <h3>MacBook Pro с Retina Display</h3>
+                    <p>Экран с плотностью 220 ppi — «пиксели не видны глазу». Apple убрала DVD-привод и Ethernet-порт. Мир взорвался критикой. Через 3 года так делали все производители. Именно эта модель считается родоначальником современных MacBook.</p>
+                </div>
+                <div class="timeline-item visible">
+                    <div class="date">2015 ГОД</div>
+                    <h3>12-дюймовый MacBook — эксперимент</h3>
+                    <p>Самый тонкий и лёгкий MacBook в истории: 0,92 кг, 13,1 мм толщиной. Всего один порт USB-C и клавиатура-«бабочка». Процессор Intel Core M — слабый, но без вентилятора. Эксперимент не прижился, но предвосхитил будущий Air на M-чипах.</p>
+                </div>
+                <div class="timeline-item visible">
+                    <div class="date">2016-2019 ГОДЫ</div>
+                    <h3>Эра Touch Bar и клавиатуры-«бабочки»</h3>
+                    <p>Самый спорный период. Touch Bar заменил функциональные клавиши сенсорной полоской — красиво, но непрактично для профи. Клавиатура-«бабочка» ломалась от пылинок. Критика была настолько мощной, что в 2019 году Apple вернула ножничную клавиатуру, а позже — и физические клавиши Fn.</p>
+                </div>
+                <div class="timeline-item visible">
+                    <div class="date">2020 ГОД</div>
+                    <h3>Революция M1 — прощание с Intel</h3>
+                    <p>Apple объявила о переходе на собственные ARM-процессоры. MacBook Air на M1 показал двукратный прирост производительности при пассивном охлаждении и 18 часов работы. Мир замер: оказалось, ноутбук может быть мощным, холодным и долгоиграющим одновременно.</p>
+                </div>
+                <div class="timeline-item visible">
+                    <div class="date">2021-2023 ГОДЫ</div>
+                    <h3>M1 Pro/Max, M2, M3 — мощь нарастает</h3>
+                    <p>Вернулись MagSafe, HDMI и SD-слот. M1 Max с 32 ядрами GPU обошёл дискретные видеокарты. M3 принёс 3-нм техпроцесс и аппаратный рейтрейсинг — MacBook Pro стал заменять рабочие станции.</p>
+                </div>
+                <div class="timeline-item visible">
+                    <div class="date">2024-2025 ГОДЫ</div>
+                    <h3>M4, M5 — эра AI и абсолютной мощности</h3>
+                    <p>M4 дебютировал в iPad Pro с рекордным Neural Engine (38 TOPS). В конце 2025 года Apple представила M5 — чип с улучшенным 3-нм техпроцессом TSMC N3P, до 16 ядер CPU и 48 ядер GPU в версии M5 Ultra. Производительность выросла ещё на 25% к M4, а Neural Engine теперь способен запускать сложные языковые модели целиком на устройстве.</p>
+                </div>
+            </div>
+
+            <div class="fun-fact">
+                <div class="icon">💡</div>
+                <p><strong>Знаете ли вы?</strong> Название «MacBook» используется только с 2006 года. До этого ноутбуки Apple назывались PowerBook (профессиональные) и iBook (потребительские). Слово «Power» исчезло вместе с процессорами PowerPC от IBM.</p>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ВКЛАДКА 2: ЧИПЫ M1–M5 -->
+        <!-- ============================================================ -->
+        <div id="tab-chips" class="tab-content">
+            <h2>🧠 Чипы Apple Silicon: от M1 до M5</h2>
+            <p class="section-intro">В 2020 году Apple совершила то, что многие считали невозможным: отказалась от Intel после 15 лет партнёрства. Результаты превзошли ожидания. Вот полная карта эволюции.</p>
+
+            <div class="stats" id="statsChips">
+                <div class="stat-item">
+                    <div class="stat-number" data-count="5">5</div>
+                    <div class="stat-label">Поколений чипов за 5 лет</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="192">192</div>
+                    <div class="stat-label">ГБ памяти в топовой версии (M5 Ultra)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="22">22</div>
+                    <div class="stat-label">Часа автономной работы (рекорд)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="48">48</div>
+                    <div class="stat-label">TOPS Neural Engine в M5</div>
+                </div>
+            </div>
+
+            <div class="cards">
+                <div class="card">
+                    <span class="chip-badge">5 нм · 2020</span>
+                    <h3>💻 M1</h3>
+                    <p><strong>CPU:</strong> 8 ядер (4+4)</p>
+                    <p><strong>GPU:</strong> до 8 ядер</p>
+                    <p><strong>Транзисторы:</strong> 16 млрд</p>
+                    <p><strong>Память:</strong> до 16 ГБ, 68 ГБ/с</p>
+                    <p>Первый чип. Обошёл Intel Core i9 в безвентиляторном Air. Автономность выросла вдвое. Начало новой эры.</p>
+                </div>
+                <div class="card">
+                    <span class="chip-badge">5 нм · 2021</span>
+                    <h3>💻 M1 Pro / Max</h3>
+                    <p><strong>CPU:</strong> до 10 ядер (8+2)</p>
+                    <p><strong>GPU:</strong> до 32 ядер</p>
+                    <p><strong>Транзисторы:</strong> до 57 млрд</p>
+                    <p><strong>Память:</strong> до 64 ГБ, 400 ГБ/с</p>
+                    <p>Настоящая рабочая станция. Вернули MagSafe, HDMI и SD. Закрепили лидерство в профессиональном сегменте.</p>
+                </div>
+                <div class="card">
+                    <span class="chip-badge">5 нм+ · 2022</span>
+                    <h3>💻 M2</h3>
+                    <p><strong>CPU:</strong> 8 ядер (4+4)</p>
+                    <p><strong>GPU:</strong> до 10 ядер</p>
+                    <p><strong>Транзисторы:</strong> 20 млрд</p>
+                    <p><strong>Память:</strong> до 24 ГБ, 100 ГБ/с</p>
+                    <p>+18% к M1. Появился MacBook Air 15". Эволюция, а не революция — но чертовски уверенная.</p>
+                </div>
+                <div class="card">
+                    <span class="chip-badge">3 нм · 2023</span>
+                    <h3>💻 M3 / Pro / Max</h3>
+                    <p><strong>CPU:</strong> до 16 ядер</p>
+                    <p><strong>GPU:</strong> до 40 ядер</p>
+                    <p><strong>Транзисторы:</strong> до 92 млрд</p>
+                    <p><strong>Память:</strong> до 128 ГБ</p>
+                    <p>Первый 3-нм чип в индустрии. Аппаратный рейтрейсинг, Dynamic Caching GPU. Рендеринг в 2,5 раза быстрее M1 Max.</p>
+                </div>
+                <div class="card">
+                    <span class="chip-badge">3 нм N3E · 2024</span>
+                    <h3>💻 M4 / Pro / Max</h3>
+                    <p><strong>CPU:</strong> до 10 ядер (M4)</p>
+                    <p><strong>GPU:</strong> до 10 ядер (M4)</p>
+                    <p><strong>Neural Engine:</strong> 38 TOPS</p>
+                    <p><strong>Память:</strong> до 32 ГБ (M4)</p>
+                    <p>Самый мощный Neural Engine на старте. Вышел сначала в iPad Pro, затем в MacBook. Создан для эры AI.</p>
+                </div>
+                <div class="card">
+                    <span class="chip-badge">3 нм N3P · 2025</span>
+                    <h3>💻 M5 / Pro / Max / Ultra</h3>
+                    <p><strong>CPU:</strong> до 16 ядер (M5 Max)</p>
+                    <p><strong>GPU:</strong> до 48 ядер (M5 Ultra)</p>
+                    <p><strong>Neural Engine:</strong> 48 TOPS</p>
+                    <p><strong>Память:</strong> до 192 ГБ (M5 Ultra)</p>
+                    <p>+25% производительности к M4. Улучшенная энергоэффективность. Локальный запуск LLM (Large Language Models), сравнимых с GPT-4. MacBook Pro на M5 Ultra — абсолютный флагман.</p>
+                </div>
+            </div>
+
+            <h3>🔬 Почему Apple Silicon быстрее Intel и AMD?</h3>
+
+            <div class="accordion">
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        Единая память (Unified Memory) <span class="arrow">▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <p>В традиционной архитектуре CPU и GPU имеют раздельную память. Данные постоянно копируются туда-сюда, создавая «бутылочное горлышко». В Apple Silicon все компоненты используют один физический пул памяти — данные доступны мгновенно. Это как если бы все сотрудники офиса работали за одним гигантским столом, а не бегали между кабинетами с бумагами.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        ARM-архитектура (RISC) <span class="arrow">▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <p>ARM (Advanced RISC Machines) — это reduced instruction set computer (RISC). Инструкции проще и короче, чем у x86 (CISC), поэтому они выполняются быстрее и потребляют меньше энергии. Intel и AMD используют x86-64 — сложную архитектуру с «багажом» совместимости аж с 1978 года. Apple начала с чистого листа в 2020-м.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        Система на кристалле (SoC) <span class="arrow">▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <p>В одном чипе M-серии объединены: CPU, GPU, Neural Engine, контроллер памяти, контроллер ввода-вывода, Secure Enclave, ISP (обработка изображений) и медиа-движок. Всё это «общается» напрямую через единую шину с колоссальной пропускной способностью. В классическом ПК эти компоненты разнесены по материнской плате и обмениваются данными медленнее.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        Нейронный движок (Neural Engine) <span class="arrow">▼</span>
+                    </div>
+                    <div class="accordion-body">
+                        <p>16-ядерный сопроцессор оптимизирован исключительно под задачи машинного обучения: распознавание лиц, обработка голоса, шумоподавление, автозаполнение текста, локальные AI-модели. Все вычисления — прямо на устройстве, никакие данные не уходят в облако. Начиная с M5, Neural Engine способен выполнять до 48 триллионов операций в секунду.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ВКЛАДКА 3: РАЗМЕРЫ -->
+        <!-- ============================================================ -->
+        <div id="tab-sizes" class="tab-content">
+            <h2>📐 Размеры, вес и вариации</h2>
+            <p class="section-intro">Apple предлагает четыре размера экрана. Разница в цифрах кажется небольшой, но в реальной жизни ощущается радикально. Давайте разложим.</p>
+
+            <div class="size-gallery">
+                <div class="size-card">
+                    <div class="laptop-icon">💻</div>
+                    <h4>Air 13"</h4>
+                    <p class="dimensions">30,4 × 21,5 × 1,13 см<br>1,24 кг</p>
+                    <p style="font-size:13px;color:#888;">Помещается в любую сумку</p>
+                </div>
+                <div class="size-card">
+                    <div class="laptop-icon">🖥️</div>
+                    <h4>Air 15"</h4>
+                    <p class="dimensions">34,0 × 23,8 × 1,15 см<br>1,51 кг</p>
+                    <p style="font-size:13px;color:#888;">Большой экран, всё ещё лёгкий</p>
+                </div>
+                <div class="size-card">
+                    <div class="laptop-icon">🔥</div>
+                    <h4>Pro 14"</h4>
+                    <p class="dimensions">31,3 × 22,1 × 1,55 см<br>1,55–1,62 кг</p>
+                    <p style="font-size:13px;color:#888;">Золотая середина</p>
+                </div>
+                <div class="size-card">
+                    <div class="laptop-icon">🚀</div>
+                    <h4>Pro 16"</h4>
+                    <p class="dimensions">35,6 × 24,8 × 1,68 см<br>2,14–2,16 кг</p>
+                    <p style="font-size:13px;color:#888;">Настольная замена</p>
+                </div>
+            </div>
+
+            <table class="compare-table">
+                <thead>
+                    <tr><th>Что вы получаете</th><th>13"</th><th>14"</th><th>15"</th><th>16"</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Вес</td><td>1,24 кг</td><td>1,55-1,62 кг</td><td>1,51 кг</td><td>2,14-2,16 кг</td></tr>
+                    <tr><td>Разрешение</td><td>2560×1664</td><td>3024×1964</td><td>2880×1864</td><td>3456×2234</td></tr>
+                    <tr><td>Плотность пикселей</td><td>224 ppi</td><td>254 ppi</td><td>224 ppi</td><td>254 ppi</td></tr>
+                    <tr><td>Макс. яркость</td><td>500 нит</td><td>1600 нит</td><td>500 нит</td><td>1600 нит</td></tr>
+                    <tr><td>Аккумулятор</td><td>52,6 Вт·ч</td><td>70 Вт·ч</td><td>66,5 Вт·ч</td><td>100 Вт·ч</td></tr>
+                </tbody>
+            </table>
+
+            <h3>🤔 Как размер меняет жизнь</h3>
+            <ul class="features">
+                <li><strong>13 дюймов — для мобильных.</strong> Идеален для поездок, кафе, работы в самолёте или на диване. Весит как iPad Pro с клавиатурой, но это полноценный ноутбук с macOS и 18 часами работы.</li>
+                <li><strong>14 дюймов — баланс.</strong> Заметно больше экранного пространства при почти том же весе. Вы комфортно работаете с двумя окнами рядом. Отличный выбор для разработчиков и дизайнеров, которые иногда работают вне дома.</li>
+                <li><strong>15-16 дюймов — для стационарных.</strong> Экран сравним с внешним монитором. Идеально для видеомонтажа и работы с кодом, но таскать с собой ежедневно тяжеловато. MacBook Pro 16" весит как два MacBook Air 13".</li>
+            </ul>
+
+            <div class="fun-fact">
+                <div class="icon">📏</div>
+                <p><strong>Забавный факт:</strong> MacBook Air 13" с чипом M4 весит меньше, чем некоторые защитные чехлы для MacBook Pro 16". Разница в весе между ними — почти целый килограмм.</p>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ВКЛАДКА 4: ЭКРАН И ЗВУК -->
+        <!-- ============================================================ -->
+        <div id="tab-display" class="tab-content">
+            <h2>🖥️ Дисплей, звук и клавиатура</h2>
+            <p class="section-intro">Это то, с чем вы взаимодействуете ежесекундно. Apple вкладывает в эти компоненты огромные ресурсы.</p>
+
+            <h3>🖥️ Два типа дисплеев: не перепутайте</h3>
+            <ul class="features">
+                <li><strong>Liquid Retina (Air).</strong> Классический IPS-экран высокого разрешения. Цветовой охват 100% P3, яркость 500 нит. Для 95% пользователей этого более чем достаточно — фильмы, документы, интернет выглядят великолепно. Технология не mini-LED, поэтому чёрный цвет не абсолютно чёрный, но контрастность всё равно высокая.</li>
+                <li><strong>Liquid Retina XDR (Pro).</strong> Экран на базе mini-LED: тысячи микроскопических светодиодов, сгруппированных в зоны локального затемнения. Контрастность 1 000 000:1 — чёрный действительно чёрный, как на OLED. Пиковая яркость 1600 нит для HDR-контента. Это лучший экран среди ноутбуков по версии независимых тестов.</li>
+            </ul>
+
+            <h3>🔊 Шесть динамиков против четырёх</h3>
+            <ul class="features">
+                <li><strong>MacBook Air (4 динамика):</strong> Звук громкий, чистый, с поддержкой пространственного аудио. Но низких частот немного — это физическое ограничение тонкого корпуса без места для резонанса.</li>
+                <li><strong>MacBook Pro (6 динамиков):</strong> Четыре низкочастотных динамика с системой подавления вибраций (они работают в противофазе, чтобы корпус не дребезжал) и два высокочастотных. Басы ощущаются физически. Многие пользователи говорят, что Pro звучит лучше, чем их портативные колонки.</li>
+            </ul>
+
+            <h3>⌨️ Клавиатура: от катастрофы к совершенству</h3>
+            <p>С 2016 по 2019 год Apple использовала «бабочку» — сверхтонкий механизм, который ломался от попавших пылинок. Клавиши залипали, двойное срабатывание стало мемом. Программа замены обошлась Apple в сотни миллионов долларов. В 2019 году компания вернула ножничный механизм Magic Keyboard — и с тех пор клавиатуры MacBook считаются одними из лучших в индустрии: тихие, с чёткой обратной связью и настраиваемой подсветкой.</p>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ВКЛАДКА 5: МИФЫ -->
+        <!-- ============================================================ -->
+        <div id="tab-myths" class="tab-content">
+            <h2>❌ Мифы о MacBook: правда против вымысла</h2>
+            <p class="section-intro">Вокруг MacBook ходит больше мифов, чем вокруг любой другой техники. Давайте разберём каждый.</p>
+
+            <div class="myth-item">
+                <div class="myth">❌ Миф: «MacBook — это просто понты и переплата за логотип яблока»</div>
+                <div class="truth">✅ Правда: MacBook Air M1 в 2020 году стоил дешевле сопоставимых Windows-ультрабуков, при этом работал тише, быстрее и вдвое дольше. А теперь посчитайте цену Windows-ноутбука с экраном mini-LED (1600 нит), шестью динамиками, цельнометаллическим корпусом и 22 часами автономной работы. Такого просто не существует вне экосистемы Apple.</div>
+            </div>
+            <div class="myth-item">
+                <div class="myth">❌ Миф: «На Mac нельзя нормально играть в игры»</div>
+                <div class="truth">✅ Правда: Раньше — да. Сейчас — Resident Evil Village, Baldur's Gate 3, Death Stranding, Lies of P, Stray официально доступны на Mac. Apple активно инвестирует в игровое направление, а чипы M5 с аппаратным рейтрейсингом и 48 TOPS Neural Engine способны запускать современные AAA-проекты. Не PS5 Pro, конечно, но для casual-гейминга — более чем.</div>
+            </div>
+            <div class="myth-item">
+                <div class="myth">❌ Миф: «Программы с Windows не запускаются на Mac»</div>
+                <div class="truth">✅ Правда: 90% популярного софта давно портированы: Microsoft 365, Adobe CC, Chrome, VS Code, Zoom, Slack, Spotify. Специфический узкопрофессиональный софт (бухгалтерские программы, инженерные CAD-системы) — да, может потребовать виртуальной машины. Но Parallels Desktop позволяет запускать Windows 11 на Mac в пару кликов.</div>
+            </div>
+            <div class="myth-item">
+                <div class="myth">❌ Миф: «MacBook хватает на 2 года, потом он превращается в тыкву»</div>
+                <div class="truth">✅ Правда: MacBook на M-чипах стабильно работают 5-7 лет без деградации производительности. Единственная расходная деталь — батарея (около 1000 циклов). Средний срок службы Windows-ноутбука — 3-4 года. Подержанные MacBook теряют в цене медленнее, чем автомобили Lexus.</div>
+            </div>
+            <div class="myth-item">
+                <div class="myth">❌ Миф: «MacBook не чинится, проще выбросить»</div>
+                <div class="truth">✅ Правда: Ремонтопригодность ниже средней из-за пайки компонентов, но не нулевая. Apple активно расширяет программу Self Service Repair — теперь можно арендовать инструменты и заменить батарею, динамик или верхний кейс самостоятельно. Да, это дороже, чем ПК, но MacBook не «одноразовый».</div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ВКЛАДКА 6: ИТОГИ -->
+        <!-- ============================================================ -->
+        <div id="tab-compare" class="tab-content">
+            <h2>⚖️ Сравнение и вердикт</h2>
+            <p class="section-intro">Смотрите на звёзды и выбирайте, что важно именно вам.</p>
+
+            <table class="compare-table">
+                <thead>
+                    <tr><th>Критерий</th><th>Air 13"</th><th>Air 15"</th><th>Pro 14"</th><th>Pro 16"</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Мобильность</td><td class="star">⭐⭐⭐⭐⭐</td><td class="star">⭐⭐⭐⭐</td><td class="star">⭐⭐⭐⭐</td><td class="star">⭐⭐⭐</td></tr>
+                    <tr><td>Экран</td><td class="star">⭐⭐⭐⭐</td><td class="star">⭐⭐⭐⭐</td><td class="star">⭐⭐⭐⭐⭐</td><td class="star">⭐⭐⭐⭐⭐</td></tr>
+                    <tr><td>Производительность</td><td class="star">⭐⭐⭐</td><td class="star">⭐⭐⭐</td><td class="star">⭐⭐⭐⭐⭐</td><td class="star">⭐⭐⭐⭐⭐</td></tr>
+                    <tr><td>Автономность</td><td class="star">⭐⭐⭐⭐</td><td class="star">⭐⭐⭐⭐</td><td class="star">⭐⭐⭐⭐</td><td class="star">⭐⭐⭐⭐⭐</td></tr>
+                    <tr><td>Звук</td><td class="star">⭐⭐⭐⭐</td><td class="star">⭐⭐⭐⭐</td><td class="star">⭐⭐⭐⭐⭐</td><td class="star">⭐⭐⭐⭐⭐</td></tr>
+                    <tr><td>Порты</td><td class="star">⭐⭐⭐</td><td class="star">⭐⭐⭐</td><td class="star">⭐⭐⭐⭐⭐</td><td class="star">⭐⭐⭐⭐⭐</td></tr>
+                    <tr><td>Цена/качество</td><td class="star">⭐⭐⭐⭐⭐</td><td class="star">⭐⭐⭐⭐</td><td class="star">⭐⭐⭐⭐</td><td class="star">⭐⭐⭐</td></tr>
+                </tbody>
+            </table>
+
+            <h3>🎯 Для кого что</h3>
+            <ul class="features">
+                <li><strong>Студент / офис / интернет / кино:</strong> Air 13" или 15". Разница только в размере экрана. Берите тот, что приятнее глазу.</li>
+                <li><strong>Дизайнер / фотограф / верстальщик:</strong> Pro 14" — экран XDR видит цвета, которые не различают обычные мониторы.</li>
+                <li><strong>Видеомонтажёр / 3D-художник / разработчик:</strong> Pro 16" с M5 Max. Рендеринг, который раньше занимал час, завершается за 10 минут.</li>
+                <li><strong>Максимальная мобильность:</strong> Air 13" (1,24 кг). Реально легче iPad Pro в клавиатурном чехле.</li>
+                <li><strong>Универсальный выбор:</strong> Pro 14" — хорош во всём, кроме цены.</li>
+                <li><strong>AI и машинное обучение:</strong> M5 с 48 TOPS Neural Engine — запуск LLM локально, без облака и задержек.</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- ========== ФУТЕР ========== -->
+    <footer>
+        <p>© 2025 Гид по MacBook. Независимый информационный ресурс.</p>
+        <p style="margin-top: 10px;">Apple, MacBook, MacBook Air, MacBook Pro являются зарегистрированными товарными знаками Apple Inc.</p>
+        <p style="margin-top: 10px;">
+            <a href="#" onclick="scrollToTop(); return false;">Наверх ↑</a>
+        </p>
+    </footer>
+
+    <!-- ========== СКРИПТЫ (ИСПРАВЛЕННЫЕ, РАБОТАЮТ С ПЕРВОГО РАЗА) ========== -->
+    <script>
+        // Переключение вкладок
+        function switchTab(event, tabId) {
+            // Скрыть все
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            // Показать нужную
+            const targetTab = document.getElementById(tabId);
+            targetTab.classList.add('active');
+            event.currentTarget.classList.add('active');
+            // Плавный скролл к контенту
+            document.querySelector('.content-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Запуск анимаций для конкретной вкладки
+            if (tabId === 'tab-evolution') {
+                resetAndAnimateTimeline();
+            }
+            if (tabId === 'tab-chips') {
+                resetAndAnimateCounters();
+            }
+        }
+
+        // Аккордеон
+        function toggleAccordion(header) {
+            const item = header.parentElement;
+            item.classList.toggle('open');
+        }
+
+        // Прогресс-бар чтения
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = (scrollTop / scrollHeight) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+
+            // Кнопка "Наверх"
+            const btn = document.getElementById('backToTop');
+            if (scrollTop > 500) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+
+            // Сжатие навигации при скролле
+            const tabs = document.getElementById('tabsSection');
+            if (scrollTop > 100) {
+                tabs.classList.add('scrolled');
+            } else {
+                tabs.classList.remove('scrolled');
+            }
+        });
+
+        // Кнопка "Наверх"
+        document.getElementById('backToTop').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ====== АНИМАЦИЯ ТАЙМЛАЙНА (РАБОТАЕТ С ПЕРВОГО РАЗА) ======
+        function resetAndAnimateTimeline() {
+            const items = document.querySelectorAll('#tab-evolution .timeline-item');
+            // Сбрасываем все
+            items.forEach(item => item.classList.remove('visible'));
+            // Принудительный reflow, чтобы браузер точно сбросил стили
+            void document.getElementById('tab-evolution').offsetWidth;
+            // Запускаем с задержкой между элементами
+            items.forEach((item, i) => {
+                setTimeout(() => {
+                    item.classList.add('visible');
+                }, i * 200);
+            });
+        }
+
+        // ====== АНИМАЦИЯ СЧЁТЧИКОВ ======
+        function resetAndAnimateCounters() {
+            const counters = document.querySelectorAll('#statsChips .stat-number');
+            counters.forEach(el => {
+                const target = parseInt(el.getAttribute('data-count'));
+                el.textContent = '0';
+                const duration = 1800;
+                const step = target / (duration / 16);
+                let current = 0;
+                const interval = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        el.textContent = target;
+                        clearInterval(interval);
+                    } else {
+                        el.textContent = Math.floor(current);
+                    }
+                }, 16);
+            });
+        }
+
+        // Запуск при первой загрузке
+        window.addEventListener('load', () => {
+            // Таймлайн уже visible, но на всякий случай
+            resetAndAnimateTimeline();
+        });
+    </script>
+
+</body>
+</html>
